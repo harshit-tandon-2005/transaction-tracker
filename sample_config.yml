@@ -1,0 +1,8 @@
+ETHERSCAN:
+  BASE_URL: "https://api.etherscan.io/api"
+  API_KEY: "your-api-key"
+  RETRIES: 3
+BLOCKSCOUT:
+  BASE_URL: "https://api.blockscout.com/api"
+  API_KEY: "your-api-key"
+  RETRIES: 3
