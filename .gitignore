@@ -29,3 +29,6 @@ config.yml
 
 # vendor directory for dependencies
 vendor/
+
+# DS_Store
+.DS_Store

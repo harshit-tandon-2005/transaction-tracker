@@ -68,8 +68,5 @@ func (p *EtherscanProvider) FetchTransactionData(url, tag string) (string, error
 	if err != nil {
 		return "", err
 	}
-
-	// TODO: Parse the response to appropriate data struct and create a CSV file
-	fmt.Printf("Transaction data: %s\n", res)
 	return res, nil
 }

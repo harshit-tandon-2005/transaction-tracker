@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/coin-tracker/transaction-tracker/models"
 	"github.com/coin-tracker/transaction-tracker/shared/constants"
@@ -13,6 +14,17 @@ import (
 // Config struct to hold the configuration from config.yml
 
 func main() {
+
+	// Record the start time right at the beginning
+	startTime := time.Now()
+
+	// Use defer to execute this function just before main exits
+	defer func() {
+		elapsedTime := time.Since(startTime) // Calculate elapsed time
+		fmt.Printf("\n--------------------\n")
+		fmt.Printf("Total execution time: %s\n", elapsedTime) // Print the duration
+		fmt.Printf("--------------------\n")
+	}()
 	// Read the config file
 	configFile, err := os.ReadFile("config.yml")
 	if err != nil {
