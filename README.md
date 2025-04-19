@@ -53,5 +53,5 @@ Once the script is executed the reports would be generated in the project folder
 The naming of the csv files would be as follows:
 1. `{{walletAddress}}_external_report.csv`
 2. `{{walletAddress}}_internal_report.csv`
-1. `{{walletAddress}}_erc-20_report.csv`
-1. `{{walletAddress}}_erc-721_report.csv`
+3. `{{walletAddress}}_erc-20_report.csv`
+4. `{{walletAddress}}_erc-721_report.csv`
