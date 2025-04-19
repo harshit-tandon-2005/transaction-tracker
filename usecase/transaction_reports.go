@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"path/filepath"
+	"sync"
 
 	"github.com/coin-tracker/transaction-tracker/models"
 	"github.com/coin-tracker/transaction-tracker/shared/constants"
@@ -31,13 +32,58 @@ func GenerateTransactionReports(providerType string, config models.Config) error
 		constants.ERC20_REPORT:    constants.ERC20_REPORT_ACTION,
 		constants.ERC721_REPORT:   constants.ERC721_REPORT_ACTION,
 	}
+	numTasks := len(actionTagMap)
+	// Create a buffered channel to receive potential errors.
+	// Buffer size equals the number of tasks to prevent goroutines from blocking on send.
+	errChan := make(chan error, numTasks)
+
+	// Use a WaitGroup to wait for all goroutines to finish.
+	var wg sync.WaitGroup
+
+	fmt.Printf("Starting concurrent generation of %d reports...\n", numTasks)
 	for key, value := range actionTagMap {
-		err = GenerateReports(dataProvider, config.WalletAddress, value, key)
-		if err != nil {
-			fmt.Printf("[%s] Error generating transaction report: %v\n", key, err)
-			return err
+		// Increment the WaitGroup counter for each goroutine we are about to launch.
+		wg.Add(1)
+		go func(k, v string) {
+			// Decrement the counter when the goroutine finishes, regardless of success or failure.
+			defer wg.Done()
+
+			fmt.Printf("[%s] Starting report generation...\n", k)
+			err = GenerateReports(dataProvider, config.WalletAddress, v, k)
+			if err != nil {
+				fmt.Printf("[%s] Error generating report: %v\n", k, err)
+				// Send the error to the error channel. Wrap it for context.
+				errChan <- fmt.Errorf("report generation failed for key '%s': %w", k, err)
+			}
+		}(key, value)
+	}
+
+	// Wait for all goroutines launched in the loop to finish.
+	fmt.Println("Waiting for report generation tasks to complete...")
+	wg.Wait()
+	fmt.Println("All report generation tasks finished.")
+
+	// Close the error channel *after* all goroutines are guaranteed to be done.
+	// This signals to the reading loop below that no more errors will be sent.
+	close(errChan)
+
+	// Check if any errors were sent to the channel.
+	// We'll collect the first error encountered. If multiple goroutines fail,
+	// only the first error received here will be returned.
+	var firstError error
+	for err := range errChan {
+		if firstError == nil {
+			firstError = err
 		}
 	}
+
+	// Return the first error encountered, or nil if all succeeded.
+	if firstError != nil {
+		fmt.Printf("One or more report generation tasks failed. Returning first error: %v\n", firstError)
+		return firstError
+	}
+
+	fmt.Println("All reports generated successfully.")
 
 	return nil
 }
