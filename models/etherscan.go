@@ -12,7 +12,7 @@ type (
 	}
 
 	// Structure for a single normal/external transaction result
-	Transaction struct {
+	ExternalTransaction struct {
 		BlockNumber       string `json:"blockNumber"`
 		TimeStamp         string `json:"timeStamp"`
 		Hash              string `json:"hash"`
