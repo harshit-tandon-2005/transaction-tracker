@@ -47,3 +47,11 @@ go run -mod=vendor main.go
 go build -mod=vendor
 ./<executable-name> # e.g., ./transaction-tracker
 ```
+
+Once the script is executed the reports would be generated in the project folder under the directory `files/reports`
+
+The naming of the csv files would be as follows:
+1. `{{walletAddress}}_external_report.csv`
+2. `{{walletAddress}}_internal_report.csv`
+1. `{{walletAddress}}_erc-20_report.csv`
+1. `{{walletAddress}}_erc-721_report.csv`
