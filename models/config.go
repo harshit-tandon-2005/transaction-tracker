@@ -7,7 +7,8 @@ type (
 		Retries int    `yaml:"RETRIES"`
 	}
 	Config struct {
-		Etherscan  ThirdPartyApiConfig `yaml:"ETHERSCAN"`
-		Blockscout ThirdPartyApiConfig `yaml:"BLOCKSCOUT"`
+		Etherscan     ThirdPartyApiConfig `yaml:"ETHERSCAN"`
+		Blockscout    ThirdPartyApiConfig `yaml:"BLOCKSCOUT"`
+		WalletAddress string              `yaml:"WALLET_ADDRESS"`
 	}
 )

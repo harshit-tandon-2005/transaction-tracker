@@ -6,3 +6,4 @@ BLOCKSCOUT:
   BASE_URL: "https://api.blockscout.com/api"
   API_KEY: "your-api-key"
   RETRIES: 3
+WALLET_ADDRESS: ""

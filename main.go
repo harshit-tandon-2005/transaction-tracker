@@ -5,7 +5,8 @@ import (
 	"os"
 
 	"github.com/coin-tracker/transaction-tracker/models"
-
+	"github.com/coin-tracker/transaction-tracker/shared/constants"
+	usecase "github.com/coin-tracker/transaction-tracker/usecase"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,7 +30,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Print a value from the config to verify
-	fmt.Printf("Successfully loaded config:\n %+v", config)
+	err = usecase.GenerateTransactionReports(constants.PROVIDER_ETHERSCAN, config)
+	if err != nil {
+		fmt.Printf("Error generating transaction reports: %v\n", err)
+		os.Exit(1)
+	}
 
+	// --- Data Fetching ---
+	// Use the provider interface to fetch data
+
+	// --- Output ---
+	fmt.Println("\n--- Fetched Data ---")
+	fmt.Println("--------------------")
+	fmt.Println("Operation completed.")
 }
