@@ -44,7 +44,7 @@ func FormatUnixTimestampString(unixTimestampStr string) (string, error) {
 
 	// 2. Convert int64 Unix timestamp to time.Time
 	// time.Unix takes seconds and nanoseconds. Assume the input is in seconds.
-	t := time.Unix(unixTimestampInt, 0)
+	t := time.Unix(unixTimestampInt, 0).UTC()
 
 	// 3. Format the time.Time object
 	// Go uses a specific reference date (Mon Jan 2 15:04:05 MST 2006)

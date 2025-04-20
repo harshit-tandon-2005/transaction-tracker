@@ -48,6 +48,12 @@ go build -mod=vendor
 ./<executable-name> # e.g., ./transaction-tracker
 ```
 
+To run all the test cases in the repository, execute:
+
+```bash
+go test ./...
+```
+
 Once the script is executed the reports would be generated in the project folder under the directory `files/reports`
 
 The naming of the csv files would be as follows:
